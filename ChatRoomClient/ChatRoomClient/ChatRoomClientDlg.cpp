@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CChatRoomClientDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CChatRoomClientDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CChatRoomClientDlg::OnBnClickedButton2)
+	ON_MESSAGE(WM_UPDATE_MESSAGE, &CChatRoomClientDlg::OnUpdateMessage)
 END_MESSAGE_MAP()
 
 
@@ -159,23 +160,18 @@ HCURSOR CChatRoomClientDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-struct CMD_MESSAGE
-{
-	CChatRoomClientDlg * dlg;
-	Client *client;
-};
 
 
 void CChatRoomClientDlg::OnBnClickedButton1()
 {
 	UpdateData(TRUE);
 	client.init("127.0.0.1", _ttoi(port));
-	unsigned int m_uThreadID;
-	CMD_MESSAGE tmp;
-	tmp.dlg = this;
-	tmp.client = &client;
-	Sleep(1000);
-	HANDLE 	m_hThreadHandle=(HANDLE)::_beginthreadex(NULL,0,ThreadFunction, &tmp, 0, &m_uThreadID);
+	unsigned int m_uThreadID = 0;
+
+	cmd.dlg = this;
+	cmd.client = &client;
+	//Sleep(1000);
+	HANDLE 	m_hThreadHandle=(HANDLE)::_beginthreadex(NULL,0,ThreadFunction, &cmd, 0, &m_uThreadID);
 }
 unsigned __stdcall CChatRoomClientDlg::ThreadFunction(LPVOID pThreadData)
 {
@@ -198,10 +194,8 @@ unsigned __stdcall CChatRoomClientDlg::ThreadFunction(LPVOID pThreadData)
 		else
 		{
 			tmp->con.push_back(buf);			
-			dlg->m_con = buf;
-			dlg->UpdateData(FALSE);
-			//m_con.SetDlgItemText()
-			
+			dlg->m_con = dlg->m_con + "\r\n" + buf;
+			dlg->PostMessage(WM_UPDATE_MESSAGE, 0, 0);			
 		}
 	}
 	return 1;
@@ -214,4 +208,11 @@ void CChatRoomClientDlg::OnBnClickedButton2()
 	UpdateData(TRUE);
 	client.sendData((LPSTR)(LPCTSTR)m_Con, m_Con.GetLength()+1);
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+afx_msg LRESULT CChatRoomClientDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
+{
+	UpdateData(FALSE);
+	return 0;
 }

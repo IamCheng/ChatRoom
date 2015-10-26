@@ -20,7 +20,7 @@ public:
 	{
 		int len = 50;
 		int res = recv(*client, buf, len, 0);
-		if( res == 0)
+		if( res == -1)
 		{
 			vector<SOCKET>::iterator it;
 			for(it = server->clients.begin(); it != server->clients.end(); it++)
@@ -29,6 +29,7 @@ public:
 				{
 					closesocket(*client);
 					server->clients.erase(it);
+					break;
 				}
 			}			
 			return false;//ÍË³ö
@@ -85,9 +86,9 @@ int Server::run()
 			break;
 		}
 		clients.push_back(client);
-		Service tmp;
-		tmp.init(&client, this);
-		tmp.StartThead();
+		Service * tmp = new Service();
+		tmp->init(&client, this);
+		tmp->StartThead();
 	}
 }
 

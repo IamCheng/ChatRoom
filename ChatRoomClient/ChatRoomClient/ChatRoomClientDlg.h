@@ -5,8 +5,10 @@
 #pragma once
 #include "client.h"
 #include "afxwin.h"
-
+#define WM_UPDATE_MESSAGE (WM_USER+20)
 // CChatRoomClientDlg 对话框
+
+
 class CChatRoomClientDlg : public CDialogEx
 {
 // 构造
@@ -40,4 +42,13 @@ public:
 	CString m_Con;
 //	CEdit m_con;
 	CString m_con;
+	void Update(){UpdateData(FALSE);}
+	struct CMD_MESSAGE
+	{
+		CChatRoomClientDlg * dlg;
+		Client *client;
+	};
+	CMD_MESSAGE cmd;
+protected:
+	afx_msg LRESULT OnUpdateMessage(WPARAM wParam, LPARAM lParam);
 };
