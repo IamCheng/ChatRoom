@@ -203,6 +203,8 @@ unsigned __stdcall CChatRoomClientDlg::ThreadFunction(LPVOID pThreadData)
 }
 
 
+
+
 void CChatRoomClientDlg::OnBnClickedButton2()
 {
 	UpdateData(TRUE);
@@ -214,5 +216,7 @@ void CChatRoomClientDlg::OnBnClickedButton2()
 afx_msg LRESULT CChatRoomClientDlg::OnUpdateMessage(WPARAM wParam, LPARAM lParam)
 {
 	UpdateData(FALSE);
+	int cnt = ((CEdit *)GetDlgItem(IDC_EDIT1))->GetLineCount();
+	 ((CEdit *)GetDlgItem(IDC_EDIT1))->LineScroll(cnt);
 	return 0;
 }

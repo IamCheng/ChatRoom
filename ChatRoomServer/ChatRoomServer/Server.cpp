@@ -8,10 +8,10 @@ class Service: public CServiceThread
 {
 	friend CServiceThread;
 public:
-	SOCKET * client;
+	SOCKET  client;
 	char buf[1000];
 	Server * server;
-	void init(SOCKET * s, Server *server)
+	void init(SOCKET  s, Server *server)
 	{
 		client = s;
 		this->server = server;
@@ -19,15 +19,15 @@ public:
 	virtual bool RepetitionRun()
 	{
 		int len = 50;
-		int res = recv(*client, buf, len, 0);
+		int res = recv(client, buf, len, 0);
 		if( res == -1)
 		{
 			vector<SOCKET>::iterator it;
 			for(it = server->clients.begin(); it != server->clients.end(); it++)
 			{
-				if(*it == *client)
+				if(*it == client)
 				{
-					closesocket(*client);
+					closesocket(client);
 					server->clients.erase(it);
 					break;
 				}
@@ -87,7 +87,8 @@ int Server::run()
 		}
 		clients.push_back(client);
 		Service * tmp = new Service();
-		tmp->init(&client, this);
+	//	mlist_Service.push_back(tmp);
+		tmp->init(client, this);
 		tmp->StartThead();
 	}
 }

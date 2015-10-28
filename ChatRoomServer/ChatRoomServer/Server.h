@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 #pragma comment(lib,"ws2_32.lib")
-
+class Service;
 class Server
 {
 public:
@@ -16,5 +16,6 @@ public:
 	vector <SOCKET > clients;
 	void init(char * addr, int port);
 	int run();
+	vector <Service *> mlist_Service;
 
 };
