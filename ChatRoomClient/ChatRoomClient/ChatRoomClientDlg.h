@@ -51,4 +51,9 @@ public:
 	CMD_MESSAGE cmd;
 protected:
 	afx_msg LRESULT OnUpdateMessage(WPARAM wParam, LPARAM lParam);
+public:
+	afx_msg void OnEnChangeEdit3();
+//	DWORD wAddress;
+	DWORD dAddress;
+	CString mIP;
 };

@@ -12,7 +12,7 @@ class Client
 {
 public :
 	SOCKET server;
-	char addr[100];
+	char addr[100], dAddr;
 	int port;
 	sockaddr_in address;
 	vector <string> con;
