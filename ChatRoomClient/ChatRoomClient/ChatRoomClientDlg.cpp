@@ -28,6 +28,7 @@ public:
 // 实现
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
@@ -207,12 +208,14 @@ unsigned __stdcall CChatRoomClientDlg::ThreadFunction(LPVOID pThreadData)
 }
 
 
-
+#include "MainFrameDlg.h"
 
 void CChatRoomClientDlg::OnBnClickedButton2()
 {
 	UpdateData(TRUE);
-	client.sendData((LPSTR)(LPCTSTR)m_Con, m_Con.GetLength()+1);
+	CMainFrameDlg tmp;
+	tmp.DoModal();
+	//client.sendData((LPSTR)(LPCTSTR)m_Con, m_Con.GetLength()+1);
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -234,3 +237,5 @@ void CChatRoomClientDlg::OnEnChangeEdit3()
 	// 同时将 ENM_CHANGE 标志“或”运算到掩码中。
 	// TODO:  在此添加控件通知处理程序代码
 }
+
+
